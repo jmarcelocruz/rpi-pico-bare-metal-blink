@@ -36,6 +36,7 @@ SECTIONS {
     } > boot
     .text : ALIGN(4) {
         _stext = .;
+        *(.vectors)
         *(.text)
         . = ALIGN(4);
         _etext = .;
