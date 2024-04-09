@@ -19,8 +19,13 @@ LDFLAGS = -Tlinkerscript.ld -nostdlib ${EXTRA_LDFLAGS}
 SOURCES = startup.c main.c
 BUILDDIR = build
 
-firmware.elf: ${SOURCES}
-	${CC} ${SOURCES} ${CFLAGS} ${LDFLAGS} -o ${BUILDDIR}/$@
+firmware.elf: ${BUILDDIR}/firmware.elf
+
+${BUILDDIR}/firmware.elf: ${BUILDDIR}/firmware-no-crc.elf
+	rpi-pico-elf-add-crc $< $@
+
+${BUILDDIR}/firmware-no-crc.elf: ${SOURCES}
+	${CC} $^ ${CFLAGS} ${LDFLAGS} -o $@
 
 .PHONY: clean
 clean:
