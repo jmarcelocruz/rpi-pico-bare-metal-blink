@@ -23,6 +23,10 @@ __attribute__((section(".boot"))) void _reset(void) {
     for (long *dst = &_sbss; dst < &_ebss; dst++) {
         *dst = 0;
     }
+
+    extern int main(void);
+    main();
+
     for (;;) { ; }
 }
 
