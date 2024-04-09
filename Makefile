@@ -16,7 +16,7 @@ CC = arm-none-eabi-gcc
 CFLAGS = -mcpu=cortex-m0plus -mthumb ${EXTRA_CFLAGS}
 LDFLAGS = -Tlinkerscript.ld -nostdlib ${EXTRA_LDFLAGS}
 
-SOURCES = startup.c
+SOURCES = startup.c main.c
 BUILDDIR = build
 
 firmware.elf: ${SOURCES}
