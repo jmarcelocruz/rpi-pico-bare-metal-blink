@@ -13,6 +13,17 @@
  *  limitations under the License.
  */
 
+#include <gpio/gpio.h>
+
+#define LED_PIN 25 /* onboard LED on Pico */
+
 int main(void) {
+    gpio_init(LED_PIN);
+    gpio_put(LED_PIN, 1);
+
+    while (1) {
+        ;
+    }
+
     return 0;
 }
