@@ -16,7 +16,7 @@ CC = arm-none-eabi-gcc
 CFLAGS = -mcpu=cortex-m0plus -mthumb -Iinclude ${EXTRA_CFLAGS}
 LDFLAGS = -Tlinkerscript.ld -nostdlib ${EXTRA_LDFLAGS}
 
-SOURCES = startup.c main.c
+SOURCES = startup.c main.c gpio/gpio.c
 BUILDDIR = build
 
 firmware.elf: ${BUILDDIR}/firmware.elf
