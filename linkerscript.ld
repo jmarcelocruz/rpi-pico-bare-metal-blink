@@ -20,7 +20,10 @@ MEMORY {
     boot    (rx)  : ORIGIN = 0x10000000, LENGTH = 256
     /* Official Pi Pico board has 2MB of flash */
     flash   (rx)  : ORIGIN = 0x10000100, LENGTH = 2048k - LENGTH(boot)
-    sram    (rwx) : ORIGIN = 0x20000000, LENGTH = 264k
+    sram    (rwx) : ORIGIN = 0x20000000, LENGTH = 264k - LENGTH(boot)
+    /* reserve space for stage2 (.boot section) to be loaded at end of sram by
+     * the bootrom */
+    stage2  (rwx) : ORIGIN = ORIGIN(sram) + LENGTH(sram), LENGTH = LENGTH(boot)
 }
 
 _sflash = ORIGIN(flash);
@@ -33,7 +36,7 @@ SECTIONS {
          * are a CRC32 checksum of the first 252 */
         . = 256 - 4;        /* set location counter at start of CRC32 checksum */
         LONG(0xbeefbeef)    /* insert placeholder value for checksum */
-    } > boot
+    } > stage2 AT > boot
     .text : ALIGN(4) {
         _stext = .;
         *(.vectors)
