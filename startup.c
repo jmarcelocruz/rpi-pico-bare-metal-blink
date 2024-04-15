@@ -30,38 +30,42 @@ __attribute__((section(".boot"))) void _reset(void) {
     for (;;) { ; }
 }
 
-__attribute__((weak)) void NMI_Handler(void);
-__attribute__((weak)) void HardFault_Handler(void);
-__attribute__((weak)) void SVCall_Handler(void);
-__attribute__((weak)) void PendSV_Handler(void);
-__attribute__((weak)) void SysTick_Handler(void);
+void Default_IRQ_Handler(void) {
+    for (;;) { ; }
+}
 
-__attribute__((weak)) void Timer0_IRQ_Handler(void);
-__attribute__((weak)) void Timer1_IRQ_Handler(void);
-__attribute__((weak)) void Timer2_IRQ_Handler(void);
-__attribute__((weak)) void Timer3_IRQ_Handler(void);
-__attribute__((weak)) void PWM_IRQ_Handler(void);
-__attribute__((weak)) void USBCTRL_Handler(void);
-__attribute__((weak)) void XIP_IRQ_Handler(void);
-__attribute__((weak)) void PIO0_0_IRQ_Handler(void);
-__attribute__((weak)) void PIO0_1_IRQ_Handler(void);
-__attribute__((weak)) void PIO1_0_IRQ_Handler(void);
-__attribute__((weak)) void PIO1_1_IRQ_Handler(void);
-__attribute__((weak)) void DMA0_IRQ_Handler(void);
-__attribute__((weak)) void DMA1_IRQ_Handler(void);
-__attribute__((weak)) void IO_Bank0_IRQ_Handler(void);
-__attribute__((weak)) void IO_QSPI_IRQ_Handler(void);
-__attribute__((weak)) void SIO_Proc0_IRQ_Handler(void);
-__attribute__((weak)) void SIO_Proc1_IRQ_Handler(void);
-__attribute__((weak)) void Clocks_IRQ_Handler(void);
-__attribute__((weak)) void SPI0_IRQ_Handler(void);
-__attribute__((weak)) void SPI1_IRQ_Handler(void);
-__attribute__((weak)) void UART0_IRQ_Handler(void);
-__attribute__((weak)) void UART1_IRQ_Handler(void);
-__attribute__((weak)) void ADC_FIFO_IRQ_Handler(void);
-__attribute__((weak)) void I2C0_IRQ_Handler(void);
-__attribute__((weak)) void I2C1_IRQ_Handler(void);
-__attribute__((weak)) void RTC_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void NMI_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void HardFault_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SVCall_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PendSV_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SysTick_Handler(void);
+
+__attribute__((weak, alias("Default_IRQ_Handler"))) void Timer0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void Timer1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void Timer2_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void Timer3_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PWM_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void USBCTRL_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void XIP_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PIO0_0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PIO0_1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PIO1_0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void PIO1_1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void DMA0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void DMA1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void IO_Bank0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void IO_QSPI_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SIO_Proc0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SIO_Proc1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void Clocks_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SPI0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void SPI1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void UART0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void UART1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void ADC_FIFO_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void I2C0_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void I2C1_IRQ_Handler(void);
+__attribute__((weak, alias("Default_IRQ_Handler"))) void RTC_IRQ_Handler(void);
 
 extern void _estack(void);
 /* ARMv6-M Architecture Reference Manual, section B1.5.3 */
