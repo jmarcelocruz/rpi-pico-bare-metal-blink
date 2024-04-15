@@ -12,6 +12,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. */
 
+#include <hardware/scb.h>
 #include <hardware/ssi.h>
 
 __attribute__((section(".boot"))) void _reset(void) {
@@ -38,6 +39,9 @@ __attribute__((section(".boot"))) void _reset(void) {
     for (long *dst = &_sbss; dst < &_ebss; dst++) {
         *dst = 0;
     }
+
+    extern void (*vectors[])(void);
+    SCB->vtor = (uint32_t)vectors;
 
     extern int main(void);
     main();
