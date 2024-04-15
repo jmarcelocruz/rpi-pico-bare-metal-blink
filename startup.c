@@ -12,8 +12,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. */
 
+#include <hardware/ssi.h>
 
 __attribute__((section(".boot"))) void _reset(void) {
+    SSI->ssienr = 0;
+    SSI->baudr = 2;
+    SSI->ctrlr0 =
+        (SSI_SPI_FRF_SPI << SSI_CTRLR0_SPI_FRF_LSB) |
+        (SSI_TMOD_EEPROM_READ << SSI_CTRLR0_TMOD_LSB) |
+        (SSI_DFS_32_SIZE(32) << SSI_CTRLR0_DFS_32_LSB);
+    SSI->ctrlr1 = (0 << 0);
+    SSI->spi_ctrlr0 =
+        (3U << SSI_SPI_CTRLR0_XIP_CMD_LSB) |
+        (6U << SSI_SPI_CTRLR0_ADDR_L_LSB) |
+        (2U << SSI_SPI_CTRLR0_INST_L_LSB) |
+        (0U << SSI_SPI_CTRLR0_TRANS_TYPE_LSB);
+    SSI->ssienr = 1;
+
     extern long _etext, _sdata, _edata, _sbss, _ebss;
     /* load data section from flash into sram */
     for (long *src = &_etext, *dst = &_sdata; dst < &_edata; src++, dst++) {
