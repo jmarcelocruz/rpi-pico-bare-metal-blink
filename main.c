@@ -16,13 +16,18 @@
 #include <gpio/gpio.h>
 
 #define LED_PIN 25 /* onboard LED on Pico */
+#define BUTTON_PIN 18
 
 int main(void) {
     gpio_init(LED_PIN);
-    gpio_put(LED_PIN, 1);
+    gpio_init(BUTTON_PIN);
 
     while (1) {
-        ;
+        if (gpio_get(BUTTON_PIN)) {
+            gpio_put(LED_PIN, 1);
+        } else {
+            gpio_put(LED_PIN, 0);
+        }
     }
 
     return 0;
