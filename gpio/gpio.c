@@ -29,7 +29,7 @@ void gpio_init(unsigned int gpio) {
     PADS_BANK0->io[gpio] = ((1U << PADS_BANK0_GPIO_IE_LSB) & PADS_BANK0_GPIO_IE_BITS)
         | ((0U << PADS_BANK0_GPIO_OD_LSB) & PADS_BANK0_GPIO_OD_BITS);
     SIO->io_out_clr = (1U << gpio);
-    SIO->io_oe = (1U << gpio);
+    SIO->io_oe_set = (1U << gpio);
 }
 
 void gpio_put(unsigned int gpio, int value) {
