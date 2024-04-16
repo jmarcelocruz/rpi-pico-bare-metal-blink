@@ -32,6 +32,10 @@ void gpio_init(unsigned int gpio) {
     SIO->io_oe_set = (1U << gpio);
 }
 
+unsigned int gpio_get(unsigned int gpio) {
+    return (SIO->io_in & (1U << gpio)) ? 1U : 0U;
+}
+
 void gpio_put(unsigned int gpio, int value) {
     if (value) {
         SIO->io_out_set = (1U << gpio);

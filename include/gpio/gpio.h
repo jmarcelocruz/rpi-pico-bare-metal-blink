@@ -31,6 +31,7 @@ typedef enum {
 } gpio_function_t;
 
 void gpio_init(unsigned int gpio);
+unsigned int gpio_get(unsigned int gpio);
 void gpio_put(unsigned int gpio, int value);
 
 #endif
