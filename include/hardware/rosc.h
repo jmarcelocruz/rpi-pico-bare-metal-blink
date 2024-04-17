@@ -10,24 +10,29 @@
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+ *  limitations under the License. */
 
-#ifndef RESETS_H
-#define RESETS_H
+#ifndef HW_ROSC_H
+#define HW_ROSC_H
 
 #include <types.h>
 
 typedef struct {
-    rw32_t reset;
-    rw32_t wdsel;
-    ro32_t reset_done;
-} resets_hw_t;
+    rw32_t ctrl;
+    rw32_t freqa;
+    rw32_t freqb;
+    rw32_t dormant;
+    rw32_t div;
+    rw32_t phase;
+    rw32_t status;
+    ro32_t randombit;
+    rw32_t count;
+} rosc_hw_t;
 
-#define RESETS_IO_BANK0_BITS (1U << 5)
-#define RESETS_PADS_BANK0_BITS (1U << 8)
-#define RESETS_PLL_SYS_BITS (1U << 12)
+#define ROSC ((rosc_hw_t *)0x40060000)
 
-#define RESETS ((resets_hw_t *)0x4000c000)
+#define ROSC_CTRL_ENABLE_LSB (12)
+#define ROSC_CTRL_ENABLE_DISABLE (0xd1e)
+#define ROSC_CTRL_ENABLE_ENABLE (0xfab)
 
 #endif

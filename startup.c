@@ -12,8 +12,57 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License. */
 
+#include <hardware/clocks.h>
+#include <hardware/resets.h>
+#include <hardware/rosc.h>
+#include <hardware/pll.h>
 #include <hardware/scb.h>
 #include <hardware/ssi.h>
+#include <hardware/xosc.h>
+
+static void clocks(void) {
+    /* enable XOSC */
+    XOSC->ctrl =
+        (XOSC_CTRL_ENABLE_ENABLE << XOSC_CTRL_ENABLE_LSB) |
+        (XOSC_CTRL_FREQ_RANGE_VALUE << XOSC_CTRL_FREQ_RANGE_LSB);
+    while ((XOSC->status & XOSC_STATUS_STABLE_BITS) == 0) {
+        ;
+    }
+    /* switch clk_ref from ROSC to XOSC */
+    CLOCKS->ref.ctrl = (CLOCKS_REF_CTRL_SRC_XOSC << CLOCKS_CTRL_SRC_LSB);
+    /* disable ROSC */
+    ROSC->ctrl = (ROSC_CTRL_ENABLE_DISABLE << ROSC_CTRL_ENABLE_LSB);
+    /* configure system PLL */
+    RESETS->reset &= ~(RESETS_PLL_SYS_BITS);
+    while ((RESETS->reset_done & RESETS_PLL_SYS_BITS) == 0) {
+        ;
+    }
+    PLL_SYS->fbdiv_int = PLL_125MHZ_FBDIV;
+    PLL_SYS->pwr &= ~(PLL_PWR_PD_BITS | PLL_PWR_VCOPD_BITS);
+    while ((PLL_SYS->cs & PLL_CS_LOCK_BITS) == 0) {
+        ;
+    }
+    PLL_SYS->prim =
+        (PLL_125MHZ_POSTDIV1 << PLL_PRIM_POSTDIV1_LSB) |
+        (PLL_125MHZ_POSTDIV2 << PLL_PRIM_POSTDIV2_LSB);
+    PLL_SYS->pwr &= ~(PLL_PWR_POSTDIVPD_BITS);
+    while ((PLL_SYS->cs & PLL_CS_LOCK_BITS) == 0) {
+        ;
+    }
+    /* switch clk_sys from clk_ref to system PLL */
+    CLOCKS->sys.ctrl =
+        (CLOCKS_SYS_CTRL_SRC_REF << CLOCKS_CTRL_SRC_LSB) |
+        (CLOCKS_SYS_CTRL_AUXSRC_PLL_SYS << CLOCKS_CTRL_AUXSRC_LSB);
+    while (CLOCKS->sys.selected == 0) {
+        ;
+    }
+    CLOCKS->sys.ctrl =
+        (CLOCKS_SYS_CTRL_SRC_AUX << CLOCKS_CTRL_SRC_LSB) |
+        (CLOCKS_SYS_CTRL_AUXSRC_PLL_SYS << CLOCKS_CTRL_AUXSRC_LSB);
+    while (CLOCKS->sys.selected == 0) {
+        ;
+    }
+}
 
 __attribute__((section(".boot"))) void _reset(void) {
     SSI->ssienr = 0;
@@ -29,6 +78,8 @@ __attribute__((section(".boot"))) void _reset(void) {
         (2U << SSI_SPI_CTRLR0_INST_L_LSB) |
         (0U << SSI_SPI_CTRLR0_TRANS_TYPE_LSB);
     SSI->ssienr = 1;
+
+    clocks();
 
     extern long _etext, _sdata, _edata, _sbss, _ebss;
     /* load data section from flash into sram */
