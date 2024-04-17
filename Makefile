@@ -30,8 +30,9 @@ ${BUILDDIR}/firmware-no-crc.elf: ${OBJECTS}
 	${CC} $^ ${LDFLAGS} -o $@
 
 ${OBJECTS}: ${BUILDDIR}/%.o: %.c
+	mkdir -p $(dir $@)
 	${CC} $^ ${CFLAGS} -o $@
 
 .PHONY: clean
 clean:
-	rm -r ${BUILDDIR}/*
+	rm -r ${BUILDDIR}
