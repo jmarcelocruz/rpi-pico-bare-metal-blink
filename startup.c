@@ -62,6 +62,10 @@ static void clocks(void) {
     while (CLOCKS->sys.selected == 0) {
         ;
     }
+    /* start peripheral clock and run it off of XOSC (@12MHz) */
+    CLOCKS->peri.ctrl =
+        (1U << CLOCKS_CTRL_ENABLE_LSB) |
+        (CLOCKS_PERI_AUXSRC_XOSC << CLOCKS_CTRL_AUXSRC_LSB);
 }
 
 __attribute__((section(".boot"))) void _reset(void) {

@@ -40,6 +40,7 @@ typedef struct {
     ro32_t ints;
 } clocks_hw_t;
 
+#define CLOCKS_CTRL_ENABLE_LSB (11)
 #define CLOCKS_CTRL_AUXSRC_LSB (5)
 #define CLOCKS_CTRL_SRC_LSB (0)
 
@@ -48,6 +49,8 @@ typedef struct {
 #define CLOCKS_SYS_CTRL_AUXSRC_PLL_SYS (0x0)
 #define CLOCKS_SYS_CTRL_SRC_REF (0x0)
 #define CLOCKS_SYS_CTRL_SRC_AUX (0x1)
+
+#define CLOCKS_PERI_AUXSRC_XOSC (0x4)
 
 #define CLOCKS ((clocks_hw_t *)0x40008000)
 
