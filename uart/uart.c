@@ -42,7 +42,7 @@ void uart0_init(void) {
 }
 
 char uart0_read(void) {
-    while ((UART0->uartfr & UART_UARTFR_RXFE_BITS) != 0) {
+    while (UART0->uartfr & UART_UARTFR_RXFE_BITS) {
         ;
     }
     char c = UART0->uartdr;
@@ -51,7 +51,7 @@ char uart0_read(void) {
 }
 
 void uart0_write(char c) {
-    while ((UART0->uartfr & UART_UARTFR_BUSY_BITS) != 0) {
+    while (UART0->uartfr & UART_UARTFR_TXFF_BITS) {
         ;
     }
     UART0->uartdr = c;

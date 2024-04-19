@@ -39,6 +39,8 @@ typedef struct {
     ro32_t uartpcellid[4];
 } uart_hw_t;
 
+#define UART_UARTFR_TXFF_LSB (5)
+#define UART_UARTFR_TXFF_BITS (1U << UART_UARTFR_TXFF_LSB)
 #define UART_UARTFR_RXFE_LSB (4)
 #define UART_UARTFR_RXFE_BITS (1U << UART_UARTFR_RXFE_LSB)
 #define UART_UARTFR_BUSY_LSB (3)
