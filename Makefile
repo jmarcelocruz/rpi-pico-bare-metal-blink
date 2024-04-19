@@ -13,12 +13,13 @@
 # limitations under the License.
 
 CC = arm-none-eabi-gcc
-CFLAGS = -c -mcpu=cortex-m0plus -mthumb -Iinclude ${EXTRA_CFLAGS}
-LDFLAGS = -Tlinkerscript.ld -nostdlib ${EXTRA_LDFLAGS}
+ARCHFLAGS = -mcpu=cortex-m0plus -mthumb
+CFLAGS = -c ${ARCHFLAGS} -Iinclude ${EXTRA_CFLAGS}
+LDFLAGS = ${ARCHFLAGS} -Tlinkerscript.ld -nostartfiles -specs nano.specs ${EXTRA_LDFLAGS}
 
 BUILDDIR = build
 
-SOURCES = startup.c main.c gpio/gpio.c
+SOURCES =  syscalls.c startup.c main.c gpio/gpio.c uart/uart.c
 OBJECTS = $(patsubst %.c, ${BUILDDIR}/%.o, ${SOURCES})
 
 firmware.elf: ${BUILDDIR}/firmware.elf

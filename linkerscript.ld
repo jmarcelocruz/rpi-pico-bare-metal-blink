@@ -41,19 +41,30 @@ SECTIONS {
         _stext = .;
         *(.vectors)
         *(.text)
+        *(.text.*)
         . = ALIGN(4);
         _etext = .;
+    } > flash
+    .rodata : ALIGN(4) {
+        _srodata = .;
+        *(.rodata)
+        *(.rodata.*)
+        . = ALIGN(4);
+        _erodata = .;
     } > flash
     .data : ALIGN(4) {
         _sdata = .;
         *(.data)
+        *(.data.*)
         . = ALIGN(4);
         _edata = .;
     } > sram AT > flash
     .bss : ALIGN(4) {
         _sbss = .;
         *(.bss)
+        *(.bss.*)
         . = ALIGN(4);
         _ebss = .;
     } > sram
+    _sheap = .;
 }

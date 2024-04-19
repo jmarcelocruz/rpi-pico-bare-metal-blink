@@ -85,9 +85,9 @@ __attribute__((section(".boot"))) void _reset(void) {
 
     clocks();
 
-    extern long _etext, _sdata, _edata, _sbss, _ebss;
+    extern long _erodata, _sdata, _edata, _sbss, _ebss;
     /* load data section from flash into sram */
-    for (long *src = &_etext, *dst = &_sdata; dst < &_edata; src++, dst++) {
+    for (long *src = &_erodata, *dst = &_sdata; dst < &_edata; src++, dst++) {
         *dst = *src;
     }
     /* zero out bss section */

@@ -13,14 +13,20 @@
  *  limitations under the License.
  */
 
+#include <stdio.h>
+
 #include <gpio/gpio.h>
+#include <uart/uart.h>
 
 #define LED_PIN 25 /* onboard LED on Pico */
 #define BUTTON_PIN 18
 
 int main(void) {
+    uart0_init();
     gpio_init(LED_PIN);
     gpio_init(BUTTON_PIN);
+
+    printf("*** rpi-bare-metal-blink ***\r\n");
 
     while (1) {
         if (gpio_get(BUTTON_PIN)) {
