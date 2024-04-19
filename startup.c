@@ -18,7 +18,12 @@
 #include <hardware/pll.h>
 #include <hardware/scb.h>
 #include <hardware/ssi.h>
+#include <hardware/systick.h>
 #include <hardware/xosc.h>
+
+#define SYSTICK_LOAD_VALUE 125000 /* 1ms delay at 125MHz*/
+
+unsigned long tick = 0;
 
 static void clocks(void) {
     /* enable XOSC */
@@ -68,6 +73,15 @@ static void clocks(void) {
         (CLOCKS_PERI_AUXSRC_XOSC << CLOCKS_CTRL_AUXSRC_LSB);
 }
 
+static void systick(void) {
+    SYSTICK->rvr = SYSTICK_LOAD_VALUE;
+    SYSTICK->cvr = 0U;
+    SYSTICK->csr =
+        (1U << SYSTICK_CSR_CLKSOURCE_LSB) |
+        (1U << SYSTICK_CSR_ENABLE_LSB) |
+        (1U << SYSTICK_CSR_TICKINT_LSB);
+}
+
 __attribute__((section(".boot"))) void _reset(void) {
     SSI->ssienr = 0;
     SSI->baudr = 2;
@@ -98,6 +112,8 @@ __attribute__((section(".boot"))) void _reset(void) {
     extern void (*vectors[])(void);
     SCB->vtor = (uint32_t)vectors;
 
+    systick();
+
     extern int main(void);
     main();
 
@@ -112,7 +128,7 @@ __attribute__((weak, alias("Default_IRQ_Handler"))) void NMI_Handler(void);
 __attribute__((weak, alias("Default_IRQ_Handler"))) void HardFault_Handler(void);
 __attribute__((weak, alias("Default_IRQ_Handler"))) void SVCall_Handler(void);
 __attribute__((weak, alias("Default_IRQ_Handler"))) void PendSV_Handler(void);
-__attribute__((weak, alias("Default_IRQ_Handler"))) void SysTick_Handler(void);
+__attribute__((weak)) void SysTick_Handler(void) { tick++; };
 
 __attribute__((weak, alias("Default_IRQ_Handler"))) void Timer0_IRQ_Handler(void);
 __attribute__((weak, alias("Default_IRQ_Handler"))) void Timer1_IRQ_Handler(void);
