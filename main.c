@@ -15,11 +15,13 @@
 
 #include <stdio.h>
 
+#include <delay/delay.h>
 #include <gpio/gpio.h>
 #include <uart/uart.h>
 
 #define LED_PIN 25 /* onboard LED on Pico */
 #define BUTTON_PIN 18
+#define DELAY_MS 500
 
 int main(void) {
     uart0_init();
@@ -31,6 +33,9 @@ int main(void) {
     while (1) {
         if (gpio_get(BUTTON_PIN)) {
             gpio_put(LED_PIN, 1);
+            delay_ms(500);
+            gpio_put(LED_PIN, 0);
+            delay_ms(500);
         } else {
             gpio_put(LED_PIN, 0);
         }

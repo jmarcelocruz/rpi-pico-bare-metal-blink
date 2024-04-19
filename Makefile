@@ -19,7 +19,7 @@ LDFLAGS = ${ARCHFLAGS} -Tlinkerscript.ld -nostartfiles -specs nano.specs ${EXTRA
 
 BUILDDIR = build
 
-SOURCES =  syscalls.c startup.c main.c gpio/gpio.c uart/uart.c
+SOURCES =  syscalls.c startup.c main.c gpio/gpio.c uart/uart.c delay/delay.c
 OBJECTS = $(patsubst %.c, ${BUILDDIR}/%.o, ${SOURCES})
 
 firmware.elf: ${BUILDDIR}/firmware.elf
