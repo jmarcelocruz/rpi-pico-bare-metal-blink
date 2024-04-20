@@ -28,17 +28,17 @@ void uart0_init(void) {
     }
     IO_BANK0->io[0].ctrl = GPIO_FUNC_UART & IO_BANK0_GPIO_CTRL_FUNCSEL_BITS;
     IO_BANK0->io[1].ctrl = GPIO_FUNC_UART & IO_BANK0_GPIO_CTRL_FUNCSEL_BITS;
-    /* set transmission format - 8 bit word, no parity, 1 stop bit */
-    UART0->uartlcr_h |=
-        (UART_UARTLCR_H_WLEN_8BIT << UART_UARTLCR_H_WLEN_LSB);
-    /* configure baudrate for 115200 */
-    UART0->uartibrd = 6U;
-    UART0->uartfbrd = 33U;
     /* enable uart, rx & tx*/
-    UART0->uartcr |=
+    UART0->uartcr =
         (1U << UART_UARTCR_UARTEN_LSB) |
         (1U << UART_UARTCR_RXE_LSB) |
         (1U << UART_UARTCR_TXE_LSB);
+    /* configure baudrate for 115200 */
+    UART0->uartibrd = 6U;
+    UART0->uartfbrd = 33U;
+    /* set transmission format - 8 bit word, no parity, 1 stop bit */
+    UART0->uartlcr_h =
+        (UART_UARTLCR_H_WLEN_8BIT << UART_UARTLCR_H_WLEN_LSB);
 }
 
 char uart0_read(void) {
@@ -51,7 +51,7 @@ char uart0_read(void) {
 }
 
 void uart0_write(char c) {
-    while (UART0->uartfr & UART_UARTFR_TXFF_BITS) {
+    while (UART0->uartfr & UART_UARTFR_BUSY_BITS) {
         ;
     }
     UART0->uartdr = c;
